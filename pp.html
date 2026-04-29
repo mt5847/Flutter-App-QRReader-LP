@@ -9,33 +9,45 @@
 
   const lang = navigator.language || navigator.userLanguage;
 
+  const supported = [
+    "ar","ca","cs","da","de","el","en","es","fi","fr",
+    "he","hi","hr","hu","id","it","ja","ko","ms","nb",
+    "nl","pl","pt","ro","ru","sk","sv","th","tr","uk",
+    "vi","zh-Hans","zh-Hant"
+  ];
+
   function normalizeLocale(locale) {
 
-    // zh-Hans / zh-Hant は例外として維持
+    if (!locale) return "en";
+
+    // zh-Hans / zh-Hant は例外
     if (locale === "zh-Hans" || locale === "zh-Hant") {
       return locale;
     }
 
-    // zh-TW / zh-HK → zh-Hant
+    // 中国語の地域判定
     if (locale.startsWith("zh-TW") || locale.startsWith("zh-HK")) {
       return "zh-Hant";
     }
 
-    // zh-CN / zh-SG → zh-Hans
     if (locale.startsWith("zh")) {
       return "zh-Hans";
     }
 
-    // それ以外：言語コードのみ
+    // 言語コードのみ抽出
     return locale.split("-")[0];
-
   }
 
-  const code = normalizeLocale(lang);
+  let code = normalizeLocale(lang);
 
-  const url = "pp_" + code + ".html";
+  // 未対応なら default=en
+  if (!supported.includes(code)) {
+    code = "en";
+  }
 
-  window.location.replace(url);
+  window.location.replace(
+    "pp_" + code + ".html"
+  );
 
 })();
 </script>
