@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Privacy Policy Redirect</title>
+
+<script>
+(function () {
+
+  const lang = navigator.language || navigator.userLanguage;
+
+  function normalizeLocale(locale) {
+
+    // zh-Hans / zh-Hant は例外として維持
+    if (locale === "zh-Hans" || locale === "zh-Hant") {
+      return locale;
+    }
+
+    // zh-TW / zh-HK → zh-Hant
+    if (locale.startsWith("zh-TW") || locale.startsWith("zh-HK")) {
+      return "zh-Hant";
+    }
+
+    // zh-CN / zh-SG → zh-Hans
+    if (locale.startsWith("zh")) {
+      return "zh-Hans";
+    }
+
+    // それ以外：言語コードのみ
+    return locale.split("-")[0];
+
+  }
+
+  const code = normalizeLocale(lang);
+
+  const url = "pp_" + code + ".html";
+
+  window.location.replace(url);
+
+})();
+</script>
+
+</head>
+
+<body>
+Redirecting...
+</body>
+</html>
